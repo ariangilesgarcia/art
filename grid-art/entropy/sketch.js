@@ -39,6 +39,9 @@ function setup() {
     .onChange(() => updateCanvas());
   gui.addColor(params, "bg_color").onChange(() => updateCanvas());
   gui.addColor(params, "stroke_color").onChange(() => updateCanvas());
+
+  // Close the GUI by default
+  gui.close();
 }
 
 function updateCanvas() {
@@ -64,7 +67,7 @@ function draw() {
       // Row 0: no rotation
       // Row N_ROWS-1: full rotation range
       let max_rotation = map(j, 0, params.n_rows - 1, 0, 60);
-      let random_rotation_offset = random(0, max_rotation);
+      let random_rotation_offset = Math.pow(random(0, 1), 2) * max_rotation;
       rotate(random_rotation_offset * random([1, -1]));
       // Row 0: no distance
       // Row N_ROWS-1: full distance range
@@ -75,7 +78,8 @@ function draw() {
         0,
         params.square_size * 0.75
       );
-      let random_distance_offset = random(0, max_distance_offset);
+      let random_distance_offset =
+        Math.pow(random(0, 1), 2) * max_distance_offset; // Exponential
       rect(
         0 + random_distance_offset * random([1, -1]),
         0 + random_distance_offset * random([1, -1]),
