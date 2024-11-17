@@ -86,3 +86,7 @@ function draw() {
     }
   }
 }
+
+function doubleClicked() {
+  save("arian-entropy-" + millis() + ".svg");
+}
