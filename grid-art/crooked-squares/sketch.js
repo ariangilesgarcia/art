@@ -1,4 +1,6 @@
 const SIZE = 500;
+const N = 4;
+const layers = [];
 
 function setup() {
   createCanvas(SIZE, SIZE, SVG);
@@ -8,13 +10,21 @@ function setup() {
 }
 
 function draw() {
-  background("#E0EFDE");
-  fill("#E08D79");
+  background("#abcdef");
   noStroke();
 
-  let layer = new ShapeLayer();
-  layer.render();
+  let size = SIZE / N;
+  for (let i = 0; i < N; i++) {
+    for (let j = 0; j < N; j++) {
+      layers.push(new ShapeLayer(size * i, size * j, size));
+    }
+  }
 
-  let guidelines = new Guidelines();
-  guidelines.render();
+  for (let layer of layers) {
+    layer.render();
+  }
+}
+
+function mousePressed() {
+  draw();
 }

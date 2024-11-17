@@ -1,23 +1,41 @@
-const FACTOR = 0.875;
-const MAX_SIZE = SIZE * FACTOR;
+const FACTOR = 1;
 
 class Layer {
-  constructor() {
-    this.canvas_size = MAX_SIZE * FACTOR;
+  constructor(x, y, size) {
+    this.color = "#573280";
+    this.stroke_color = "#ADA8B6";
+    this.canvas_size = size * FACTOR;
+    this.guidelines_color = "rgba(0, 0, 0, 0.33)";
+
+    this.x = x;
+    this.y = y;
+    this.size = size;
+  }
+
+  drawGuidelines() {
+    noFill();
+    stroke(this.guidelines_color);
+
+    push();
+    translate(this.x + this.canvas_size / 2, this.y + this.canvas_size / 2);
+    rect(0, 0, this.canvas_size, this.canvas_size);
+    ellipse(0, 0, this.canvas_size, this.canvas_size);
+    pop();
   }
 }
 
 class ShapeLayer extends Layer {
-  constructor() {
-    super();
+  constructor(x, y, size) {
+    super(x, y, size);
 
     this.angle = random(0, 360);
+    this.offset = random(this.canvas_size * 0.03, this.canvas_size * 0.05);
     this.max_size =
       this.canvas_size /
       (Math.abs(Math.cos(radians(this.angle))) +
         Math.abs(Math.sin(radians(this.angle))));
     this.shape = "square"; // TODO: random
-    this.size = random(0.2 * this.max_size, this.max_size);
+    this.size = random(0.35 * this.max_size, this.max_size);
     this.randomRadiusTL = 0;
     this.randomRadiusTR = 0;
     this.randomRadiusBL = 0;
@@ -25,6 +43,7 @@ class ShapeLayer extends Layer {
   }
 
   render() {
+    fill(this.color);
     switch (this.shape) {
       case "square":
         this.drawSquare();
@@ -38,17 +57,33 @@ class ShapeLayer extends Layer {
         break;
       default:
     }
+
+    //this.drawGuidelines();
   }
 
   drawSquare() {
     push();
-    translate(width / 2, height / 2);
+    translate(this.x + this.canvas_size / 2, this.y + this.canvas_size / 2);
     rotate(this.angle);
+    // Main shape
     rect(
       0,
       0,
-      this.size,
-      this.size,
+      this.size - this.offset,
+      this.size - this.offset,
+      this.randomRadiusTL,
+      this.randomRadiusTR,
+      this.randomRadiusBL,
+      this.randomRadiusBR
+    );
+    // Shadow
+    noFill();
+    stroke(this.stroke_color);
+    rect(
+      0 + this.offset,
+      0 + this.offset,
+      this.size - this.offset,
+      this.size - this.offset,
       this.randomRadiusTL,
       this.randomRadiusTR,
       this.randomRadiusBL,
@@ -62,23 +97,6 @@ class ShapeLayer extends Layer {
     translate(width / 2, height / 2);
     rotate(this.angle);
     ellipse(0, 0, this.size, this.size);
-    pop();
-  }
-}
-
-class Guidelines {
-  constructor() {
-    this.color = "rgba(0, 0, 0, 0.33)";
-  }
-
-  render() {
-    noFill();
-    stroke(this.color);
-
-    push();
-    translate(width / 2, height / 2);
-    rect(0, 0, MAX_SIZE, MAX_SIZE);
-    ellipse(0, 0, MAX_SIZE, MAX_SIZE);
     pop();
   }
 }
