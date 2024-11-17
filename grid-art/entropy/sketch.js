@@ -8,12 +8,10 @@ let params = {
 };
 
 function setup() {
-  // Dynamically calculate canvas dimensions
-  params.canvas_width = params.n_cols * params.square_size + params.padding * 2;
-  params.canvas_height =
-    params.n_rows * params.square_size + params.padding * 2;
+  canvas_width = params.n_cols * params.square_size + params.padding * 2;
+  canvas_height = params.n_rows * params.square_size + params.padding * 2;
 
-  createCanvas(params.canvas_width, params.canvas_height, SVG);
+  createCanvas(canvas_width, canvas_height, SVG);
   noLoop();
   angleMode(DEGREES);
   rectMode(CENTER);
@@ -45,11 +43,10 @@ function setup() {
 
 function updateCanvas() {
   // Recalculate canvas dimensions
-  params.canvas_width = params.n_cols * params.square_size + params.padding * 2;
-  params.canvas_height =
-    params.n_rows * params.square_size + params.padding * 2;
+  canvas_width = params.n_cols * params.square_size + params.padding * 2;
+  canvas_height = params.n_rows * params.square_size + params.padding * 2;
 
-  resizeCanvas(params.canvas_width, params.canvas_height);
+  resizeCanvas(canvas_width, canvas_height);
   redraw();
 }
 
