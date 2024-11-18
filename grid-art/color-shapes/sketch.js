@@ -1,3 +1,5 @@
+const svg = false;
+
 // Default params
 let params = {
   bg_color: "#274686",
@@ -13,11 +15,19 @@ let params = {
 };
 
 function setup() {
-  createCanvas(
-    params.canvas_width + params.padding * 2,
-    params.canvas_height + params.padding * 2,
-    SVG
-  );
+  if (svg) {
+    createCanvas(
+      params.canvas_width + params.padding * 2,
+      params.canvas_height + params.padding * 2,
+      SVG
+    );
+  } else {
+    createCanvas(
+      params.canvas_width + params.padding * 2,
+      params.canvas_height + params.padding * 2
+    );
+  }
+
   noLoop();
   angleMode(DEGREES);
   rectMode(CENTER);
@@ -41,6 +51,10 @@ function setup() {
     .add(params, "canvas_height")
     .step(1)
     .onChange(() => updateCanvas());
+  gui
+    .add(params, "padding")
+    .step(1)
+    .onChange(() => updateCanvas());
   gui.addColor(params, "bg_color").onChange(() => updateCanvas());
 
   // By default, it's closed
@@ -48,6 +62,8 @@ function setup() {
 }
 
 function draw() {
+  p5grain.setup();
+
   background(params.bg_color);
 
   let n_rows = params.canvas_width / params.size;
@@ -83,6 +99,10 @@ function draw() {
       //drawCircleGrid(params.size * i, params.size * j, params.size, params.size);
       //drawHourglass(params.size * i, params.size * j, params.size, params.size);
     }
+  }
+
+  if (!svg) {
+    applyMonochromaticGrain(12);
   }
 }
 
@@ -292,5 +312,6 @@ function drawHourglass(x, y, w, h) {
 }
 
 function doubleClicked() {
-  save("arian-color-shapes-" + millis() + ".svg");
+  let extension = svg ? ".svg" : ".png";
+  save("arian-color-shapes-" + millis() + extension);
 }
