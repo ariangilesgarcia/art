@@ -1,0 +1,6 @@
+[submodule "aart/themes/PaperMod"]
+	path = aart/themes/PaperMod
+	url = https://github.com/adityatelange/hugo-PaperMod.git
+[submodule "aart/themes/re-terminal"]
+	path = aart/themes/re-terminal
+	url = https://github.com/mirus-ua/hugo-theme-re-terminal.git
