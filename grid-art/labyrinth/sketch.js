@@ -10,9 +10,9 @@ let params = {
 };
 
 // Load the image.
-function preload() {
-  img = loadImage("bg.png");
-}
+// function preload() {
+//   img = loadImage("bg.png");
+// }
 
 function setup() {
   if (svg) {
@@ -59,8 +59,9 @@ function draw() {
   p5grain.setup();
 
   background(params.bg_color);
-  img = duotone(img, color(0, 50, 174), color(255, 255, 0));
-  image(img, 0, 0, width, height, 0, 0, img.width, img.height, COVER);
+
+  // img = duotone(img, color(0, 50, 174), color(255, 255, 0));
+  // image(img, 0, 0, width, height, 0, 0, img.width, img.height, COVER);
   noFill();
   stroke(params.stroke_color);
   strokeWeight(params.line_stroke);
@@ -77,6 +78,9 @@ function draw() {
       );
 
       // Labyrinth
+      // let stroke_weight = map(j, 0, n_squares, 20, 8);
+      // strokeWeight(stroke_weight);
+
       if (random([true, false])) {
         line(0, 0, square_size, square_size);
       } else {
@@ -95,34 +99,8 @@ function draw() {
   }
 
   if (!svg) {
-    applyMonochromaticGrain(12);
+    applyMonochromaticGrain(20);
   }
-}
-
-function duotone(input, c1, c2) {
-  // go through all pixels in the image
-  input.loadPixels();
-  for (let y = 0; y < input.height; y++) {
-    for (let x = 0; x < input.width; x++) {
-      // get the red pixel value (an approx
-      // of brightness)
-      let bright = input.get(x, y)[0];
-
-      // lerpColor() needs values 0–1, so
-      // divide by 255
-      bright /= 255;
-
-      // create a new color for the pixel that's
-      // somewhere between the two colors we
-      // specified, then set the pixel to that color
-      let newColor = lerpColor(c1, c2, bright);
-      input.set(x, y, newColor);
-    }
-  }
-
-  // all done, send the processed image back!
-  input.updatePixels();
-  return input;
 }
 
 function doubleClicked() {
