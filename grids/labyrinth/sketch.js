@@ -2,17 +2,14 @@ const svg = false;
 
 let params = {
   bg_color: "#333",
-  stroke_color: "#eee",
+  stroke_color: "#ccc",
   line_stroke: 12,
   canvas_width: 500,
   canvas_height: 500,
   padding: 100,
+  min_circle_size: 5,
+  max_circle_size: 35,
 };
-
-// Load the image.
-// function preload() {
-//   img = loadImage("bg.png");
-// }
 
 function setup() {
   if (svg) {
@@ -42,6 +39,14 @@ function setup() {
     .add(params, "line_stroke", 1, 32)
     .step(1)
     .onChange(() => updateCanvas());
+  gui
+    .add(params, "min_circle_size", 1, 50)
+    .step(1)
+    .onChange(() => updateCanvas());
+  gui
+    .add(params, "max_circle_size", 1, 50)
+    .step(1)
+    .onChange(() => updateCanvas());
   gui.addColor(params, "bg_color").onChange(() => updateCanvas());
   gui.addColor(params, "stroke_color").onChange(() => updateCanvas());
 
@@ -51,7 +56,6 @@ function setup() {
 
 function updateCanvas() {
   // Recalculate canvas dimensions
-  //resizeCanvas(canvas_width, canvas_height);
   redraw();
 }
 
@@ -60,8 +64,6 @@ function draw() {
 
   background(params.bg_color);
 
-  // img = duotone(img, color(0, 50, 174), color(255, 255, 0));
-  // image(img, 0, 0, width, height, 0, 0, img.width, img.height, COVER);
   noFill();
   stroke(params.stroke_color);
   strokeWeight(params.line_stroke);
@@ -78,9 +80,6 @@ function draw() {
       );
 
       // Labyrinth
-      // let stroke_weight = map(j, 0, n_squares, 20, 8);
-      // strokeWeight(stroke_weight);
-
       if (random([true, false])) {
         line(0, 0, square_size, square_size);
       } else {
@@ -91,7 +90,13 @@ function draw() {
       noStroke();
       fill(params.stroke_color);
 
-      let ellipse_size = map(j, 0, n_squares, 1, 50);
+      let ellipse_size = map(
+        j,
+        0,
+        n_squares,
+        params.min_circle_size,
+        params.max_circle_size
+      );
       ellipse(0, 0, ellipse_size, ellipse_size);
 
       pop();
@@ -99,7 +104,7 @@ function draw() {
   }
 
   if (!svg) {
-    applyMonochromaticGrain(20);
+    applyMonochromaticGrain(6);
   }
 }
 
