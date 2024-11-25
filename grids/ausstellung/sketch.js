@@ -13,6 +13,7 @@ let params = {
 
   lines_width: 10,
   lines_distance: 10,
+  lines_color: "#333",
 };
 
 function setup() {
@@ -57,6 +58,7 @@ function setup() {
   gui.addColor(params, "bg_color").onChange(() => updateCanvas());
   gui.addColor(params, "stroke_color").onChange(() => updateCanvas());
   gui.addColor(params, "circle_color").onChange(() => updateCanvas());
+  gui.addColor(params, "lines_color").onChange(() => updateCanvas());
 
   // Close the GUI by default
   gui.close();
@@ -66,6 +68,7 @@ function draw() {
   background(params.bg_color);
 
   let x_pos = 10;
+  stroke(params.lines_color);
   strokeWeight(params.lines_width);
   while (x_pos < width / 2) {
     line(x_pos, 0, x_pos, height);
@@ -81,6 +84,7 @@ function draw() {
   pop();
 
   strokeWeight(params.lines_width);
+  stroke(params.lines_color);
   while (x_pos < width) {
     line(x_pos, 0, x_pos, height);
     x_pos += params.lines_width + params.lines_distance;
