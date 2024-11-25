@@ -89,7 +89,7 @@ function draw() {
 
 function doubleClicked() {
   let extension = svg ? ".svg" : ".png";
-  save("arian-color-shapes-" + millis() + extension);
+  save("arian-bauhaus-ausstellung-" + millis() + extension);
 }
 
 function updateCanvas() {
