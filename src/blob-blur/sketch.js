@@ -10,9 +10,10 @@ let params = {
   padding: 100,
 
   blob_radius: 100,
-  blob_resolution: 4,
+  blob_resolution: 7,
   blob_count: 3,
   blob_percentage_reduction: 0.11,
+  max_blur: 10, // Maximum blur for the first blob
 };
 
 let blob_angle;
@@ -49,22 +50,47 @@ function setup() {
   gui.addColor(params, "bg_color_2").onChange(() => updateCanvas());
   gui.addColor(params, "stroke_color").onChange(() => updateCanvas());
 
+  gui
+    .add(params, "blob_radius", 10, 500)
+    .step(1)
+    .onChange(() => updateCanvas());
+
+  gui
+    .add(params, "blob_resolution", 1, 20)
+    .step(1)
+    .onChange(() => updateCanvas());
+
+  gui
+    .add(params, "blob_count", 1, 50)
+    .step(1)
+    .onChange(() => updateCanvas());
+
+  gui
+    .add(params, "blob_percentage_reduction", 0, 1)
+    .step(0.01)
+    .onChange(() => updateCanvas());
+
+  gui
+    .add(params, "max_blur", 0, 20)
+    .step(0.1)
+    .onChange(() => updateCanvas());
+
   // Close the GUI by default
   gui.close();
 }
 
 function draw() {
-  radialGradient(
-    width / 2,
-    height / 2,
-    0, // Start radius
-    width / 2,
-    height / 2,
-    max(width, height) / 2, // End radius
-    color(params.bg_color_1), // Start color
-    color(params.bg_color_2) // End color
-  );
-
+  // radialGradient(
+  //   width / 2,
+  //   height / 2,
+  //   0, // Start radius
+  //   width / 2,
+  //   height / 2,
+  //   max(width, height) / 2, // End radius
+  //   color(params.bg_color_1), // Start color
+  //   color(params.bg_color_2) // End color
+  // );
+  background(params.bg_color_2);
   stroke(params.stroke_color);
   strokeWeight(params.stroke_weight);
   noFill();
@@ -81,8 +107,15 @@ function draw() {
     let xCenterOffset = random(0, radius * 0.15) * random([-1, 1]);
     let yCenterOffset = random(0, radius * 0.15) * random([-1, 1]);
 
+    // Calculate the blur amount for this blob
+    let blurAmount = map(l, 0, params.blob_count - 1, params.max_blur, 0);
+
     push();
     translate(width / 2 + xCenterOffset, height / 2 + yCenterOffset);
+
+    // Apply blur to the current blob
+    drawingContext.save();
+    drawingContext.filter = `blur(${blurAmount}px)`;
 
     beginShape();
 
@@ -106,7 +139,7 @@ function draw() {
 
     endShape();
 
-    filter(BLUR, params.blob_count - l);
+    drawingContext.restore(); // Restore the context to avoid affecting other blobs
     pop();
   }
 }
