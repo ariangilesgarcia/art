@@ -5,13 +5,13 @@ let params = {
   bg_color_2: "#95634B",
   stroke_color: "#eee",
   stroke_weight: 3,
-  canvas_width: 1920,
-  canvas_height: 1080,
+  canvas_width: 200,
+  canvas_height: 200,
   padding: 100,
 
-  blob_radius: 500,
-  blob_resolution: 8,
-  blob_count: 4,
+  blob_radius: 100,
+  blob_resolution: 4,
+  blob_count: 3,
   blob_percentage_reduction: 0.11,
 };
 
